@@ -1,4 +1,4 @@
-package com.ljh.Util;
+package com.ljh.util;
 
 import java.util.ArrayList;
 import java.util.List;
