@@ -1,60 +1,61 @@
 package com.ljh.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class KoreanUtils {
-	private static final char[] initial = {
+	private static final char[] INITIAL = {
 		'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ',
 		'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
 	};
-	private static final char[] middle = {
+	private static final char[] MIDDLE = {
 		'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ',
 		'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ',
 		'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'
 	};
 
-	private static final char[] last = {
-		0,      // 종성 없음(인덱스 0)
-		'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ',
-		'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
+	private static final char[] LAST = {
+		0,
+		'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ',
+		'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ',
+		'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
 	};
+	private static final List<Character> INITIAL_LIST = Collections.unmodifiableList(toCharacterList(INITIAL));
+	private static final List<Character> MIDDLE_LIST = Collections.unmodifiableList(toCharacterList(MIDDLE));
+	private static final List<Character> LAST_LIST = Collections.unmodifiableList(toCharacterList(LAST));
 	public static final int NUM_MIDDLE = 21;
 	public static final int NUM_LAST = 28;
 	public static final int KOR_BASE = 0xAC00;
 
 	public static List<Character> getInitialList() {
-		List<Character> InitialList = new ArrayList<>();
-		for (Character character : initial) {
-			InitialList.add(character);
-		}
-		return InitialList;
+		return INITIAL_LIST;
 	}
 
 	public static List<Character> getMiddleList() {
-		List<Character> middleList = new ArrayList<>();
-		for (Character character : middle) {
-			middleList.add(character);
-		}
-		return middleList;
+		return MIDDLE_LIST;
 	}
 
 	public static List<Character> getLastList() {
-		List<Character> lastList = new ArrayList<>();
-		for (Character character : last) {
-			lastList.add(character);
+		return LAST_LIST;
+	}
+
+	private static List<Character> toCharacterList(char[] characters) {
+		List<Character> result = new ArrayList<>();
+		for (char character : characters) {
+			result.add(character);
 		}
-		return lastList;
+		return result;
 	}
 
 	public static Character getInitial(char ch) throws Exception {
 		if (ch < 0xAC00 || ch > 0xD7A3) {
 			throw new Exception("입력한 문자가 한글이 아닙니다.");
 		}
-		int base = KOR_BASE;         // '가'
+		int base = KOR_BASE;
 		int index = ch - base;
 		int choseongIndex = index / (NUM_MIDDLE * NUM_LAST);
-		return KoreanUtils.initial[choseongIndex];
+		return KoreanUtils.INITIAL[choseongIndex];
 	}
 
 	public static Character getMiddle(char ch) throws Exception {
@@ -64,20 +65,20 @@ public class KoreanUtils {
 		int base = KOR_BASE;
 		int code = ch - base;
 		int jungIndex = (code / NUM_LAST) % NUM_MIDDLE;
-		return middle[jungIndex];
+		return MIDDLE[jungIndex];
 	}
 
 	public static Character getLast(char ch) throws Exception {
 		if (ch < 0xAC00 || ch > 0xD7A3) {
 			throw new Exception("입력한 문자가 한글이 아닙니다.");
 		}
-		int base = 0xAC00;
+		int base = KOR_BASE;
 		int code = ch - base;
 		int lastIndex = code % NUM_LAST;
 		if (lastIndex == 0) {
-			return null; // 종성 없음
+			return null;
 		}
-		return last[lastIndex];
+		return LAST[lastIndex];
 	}
 
 	public static Character getInitial(String s) throws Exception {
