@@ -2,6 +2,7 @@ package com.ljh.common.dto;
 
 public class CommonResponseBody {
 
+	public static final String SUCCESS_CODE = "200";
 	private String code;
 	private Object result;
 
@@ -11,12 +12,12 @@ public class CommonResponseBody {
 	}
 
 	public CommonResponseBody(Object result) {
-		this.code = "200";
+		this.code = SUCCESS_CODE;
 		this.result = result;
 	}
 
 	public CommonResponseBody() {
-		this.code = "200";
+		this.code = SUCCESS_CODE;
 		this.result = "";
 	}
 
