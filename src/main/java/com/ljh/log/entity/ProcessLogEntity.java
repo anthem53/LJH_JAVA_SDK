@@ -2,6 +2,7 @@ package com.ljh.log.entity;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.ljh.log.model.ProcessLog;
 import com.ljh.util.JsonUtils;
@@ -49,5 +50,9 @@ public class ProcessLogEntity extends ProcessLog {
 				.atZone(ZoneId.of("Asia/Seoul"))
 				.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 		return processLogEntity;
+	}
+
+	public static List<ProcessLogEntity> from(List<ProcessLog> processLogList) {
+		return processLogList.stream().map(ProcessLogEntity::of).toList();
 	}
 }
